@@ -3,7 +3,7 @@ function getMessages(req, res) {
 }
 
 function postMessage(req, res) {
-  console.log("Updating messages...");
+  res.send("updated messages");
 }
 
 module.exports = {
