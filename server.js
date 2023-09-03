@@ -1,6 +1,7 @@
 const express = require('express');
 const friendsRouter = require('./routers/friends.router.js')
 const messagesRouter = require('./routers/messages.router.js');
+const path = require('path')
 
 const app = express();
 
@@ -14,7 +15,7 @@ app.use((req, res, next) => {
 });
 
 app.use(express.json());
-
+app.use('/site', express.static( path.join(__dirname, 'public',)))
 //mounting the friends object in the express app 
 app.use('/friends',friendsRouter);
 
