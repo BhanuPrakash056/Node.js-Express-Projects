@@ -1,42 +1,28 @@
-const express = require("express");
+const express = require('express');
+
+const friendsController = require('./controllers/friends.controller');
+const messagesController = require('./controllers/messages.controller');
+
 const app = express();
-port = 3000;
 
-const friends = [
-  {
-    id: 0,
-    name: "bhanu",
-  },
-  {
-    id: 1,
-    name: "prakash",
-  },
-];
-//middleware
+const PORT = 3000;
+
 app.use((req, res, next) => {
-  console.log(`method : ${req.method} 
-    url: ${req.url}`);
+  const start = Date.now();
   next();
-});
-app.get("/", (req, res) => {
-  res.send("hello world!");
-});
-app.get("/messages", (req, res) => {
-  res.send("This is the message route!");
-});
-app.get("/friend", (req, res) => {
-  res.send("This is the friend route!");
-});
-//adding dynamic route
-app.get("/friend/:friendID", (req, res) => {
-  const friendID = Number(req.params.friendID);
-  const friend = friends[friendID];
-  if (friend) {
-    res.send(friend);
-  } else {
-    res.status(404).send("There is no friend ");
-  }
+  const delta = Date.now() - start;
+  console.log(`${req.method} ${req.url} ${delta}ms`);
 });
 
+app.use(express.json());
 
-app.listen(port, console.log(`listening on port ${port}`));
+app.post('/friends', friendsController.postFriend);
+app.get('/friends', friendsController.getFriends);
+app.get('/friends/:friendId', friendsController.getFriend);
+
+app.get('/messages', messagesController.getMessages);
+app.post('/messages', messagesController.postMessage);
+
+app.listen(PORT, () => {
+  console.log(`Listening on ${PORT}...`);
+});
