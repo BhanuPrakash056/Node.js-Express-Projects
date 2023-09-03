@@ -16,9 +16,15 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
-app.post('/friends', friendsController.postFriend);
-app.get('/friends', friendsController.getFriends);
-app.get('/friends/:friendId', friendsController.getFriend);
+const friendsRouter = express.Router();
+
+//replacing app with friendsROUTER
+friendsRouter.post('', friendsController.postFriend);
+friendsRouter.get('', friendsController.getFriends);
+friendsRouter.get('/:friendId', friendsController.getFriend);
+
+//mounting the friends object in the express app 
+app.use('/friends',friendsRouter);
 
 app.get('/messages', messagesController.getMessages);
 app.post('/messages', messagesController.postMessage);
